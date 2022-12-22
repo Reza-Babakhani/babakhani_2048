@@ -39,9 +39,11 @@ class _GameScreenState extends State<GameScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            game.isGameOver
-                ? Text("Game Over. Score: ${game.score}")
-                : Text("Score: ${game.score}"),
+            Text(game.isGameOver
+                ? "Game Over. Score: ${game.score}"
+                : (game.score == 0)
+                    ? "Move the tiles to start the game."
+                    : "Score: ${game.score}"),
             Stack(
               alignment: Alignment.center,
               children: [

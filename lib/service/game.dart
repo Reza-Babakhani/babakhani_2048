@@ -74,9 +74,8 @@ class Game extends ChangeNotifier {
       for (int j = 0; j < n; j++) {
         for (int k = i - 1; k >= 0; k--) {
           if (_rows[k][j].value == 0 && _rows[k + 1][j].value != 0) {
-            var tempTile = _rows[k][j];
-            _rows[k][j] = _rows[k + 1][j];
-            _rows[k + 1][j] = tempTile;
+            _rows[k][j] = Tile(_rows[k + 1][j].value);
+            _rows[k + 1][j] = Tile(0);
             isTileMoved = true;
           } else if (_rows[k][j].value == _rows[k + 1][j].value &&
               _rows[k + 1][j].value != 0 &&

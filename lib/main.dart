@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.grey,
       ),
       home: ChangeNotifierProvider.value(
           value: Game(4), child: const GameScreen(title: '2048')),
