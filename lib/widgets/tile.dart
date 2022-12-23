@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:babakhani_2048/providers/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Tile extends StatefulWidget {
   int _value = 0;
@@ -30,11 +32,13 @@ class _TileState extends State<Tile> {
 
   @override
   Widget build(BuildContext context) {
+    int baseNum = Provider.of<GameSetting>(context).baseNum;
+
     return Container(
       padding: const EdgeInsets.all(5),
       width: double.infinity,
       height: double.infinity,
-      decoration: getTileDecoration(widget._value),
+      decoration: getTileDecoration(context, widget._value, baseNum: baseNum),
       child: Center(
         child: FittedBox(
           fit: BoxFit.fitWidth,
@@ -48,37 +52,38 @@ class _TileState extends State<Tile> {
   }
 }
 
-BoxDecoration getTileDecoration(int value, {int baseNum = 2}) {
+BoxDecoration getTileDecoration(context, int value, {int baseNum = 2}) {
   const double raduis = 15;
 
   if (value == 0) {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(raduis),
-      color: Colors.white,
+      color: Theme.of(context).backgroundColor,
     );
   } else if (value == baseNum) {
     return BoxDecoration(
-        borderRadius: BorderRadius.circular(raduis), color: Colors.white);
+        borderRadius: BorderRadius.circular(raduis),
+        color: Theme.of(context).backgroundColor);
   } else if (value == baseNum * (pow(2, 1))) {
     return BoxDecoration(
         borderRadius: BorderRadius.circular(raduis),
-        color: const Color.fromARGB(255, 221, 221, 221));
+        color: const Color.fromARGB(255, 121, 121, 121));
   } else if (value == baseNum * (pow(2, 2))) {
     return BoxDecoration(
         borderRadius: BorderRadius.circular(raduis),
-        color: const Color.fromARGB(255, 223, 201, 201));
+        color: const Color.fromARGB(255, 167, 137, 137));
   } else if (value == baseNum * (pow(2, 3))) {
     return BoxDecoration(
         borderRadius: BorderRadius.circular(raduis),
-        color: const Color.fromARGB(255, 242, 247, 216));
+        color: const Color.fromARGB(255, 207, 212, 182));
   } else if (value == baseNum * (pow(2, 4))) {
     return BoxDecoration(
         borderRadius: BorderRadius.circular(raduis),
-        color: const Color.fromARGB(255, 231, 231, 191));
+        color: const Color.fromARGB(255, 190, 190, 154));
   } else if (value == baseNum * (pow(2, 5))) {
     return BoxDecoration(
         borderRadius: BorderRadius.circular(raduis),
-        color: const Color.fromARGB(255, 203, 230, 231));
+        color: const Color.fromARGB(255, 175, 211, 212));
   } else if (value == baseNum * (pow(2, 6))) {
     return BoxDecoration(
         borderRadius: BorderRadius.circular(raduis),

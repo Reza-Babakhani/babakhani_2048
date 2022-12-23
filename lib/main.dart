@@ -1,5 +1,9 @@
+import 'package:babakhani_2048/providers/settings.dart';
 import 'package:babakhani_2048/screens/game_screen.dart';
+import 'package:babakhani_2048/screens/loading_screen.dart';
+import 'package:babakhani_2048/screens/setting_screen.dart';
 import 'package:babakhani_2048/service/game.dart';
+import 'package:babakhani_2048/utils/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,15 +17,32 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '2048',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        primarySwatch: Colors.grey,
-      ),
-      home: ChangeNotifierProvider.value(
-          value: Game(4), child: const GameScreen(title: '2048')),
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<ThemeNotifier>(create: (_) => ThemeNotifier()),
+          ChangeNotifierProvider<GameSetting>(create: (ctx) => GameSetting()),
+          ChangeNotifierProxyProvider<GameSetting, Game>(
+            update: (ctx, setting, game) => Game(setting),
+            create: (ctx) => Game(null),
+          ),
+        ],
+        child: Consumer<ThemeNotifier>(builder: (context, theme, _) {
+          return MaterialApp(
+            title: '2048',
+            debugShowCheckedModeBanner: false,
+            theme: theme.getTheme(),
+            home: FutureBuilder(
+              future: Provider.of<GameSetting>(context, listen: false).fetch(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  return const GameScreen(title: '2049');
+                } else {
+                  return const LoadingScreen();
+                }
+              },
+            ),
+            routes: {SettingScreen.routeName: (ctx) => const SettingScreen()},
+          );
+        }));
   }
 }
