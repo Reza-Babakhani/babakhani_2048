@@ -1,4 +1,4 @@
-package com.example.babakhani_2048
+package ir.rezababakhani.play20480
 
 import io.flutter.embedding.android.FlutterActivity
 

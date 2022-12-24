@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
               future: Provider.of<GameSetting>(context, listen: false).fetch(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
-                  return const GameScreen(title: '2049');
+                  return const GameScreen(title: '20480');
                 } else {
                   return const LoadingScreen();
                 }

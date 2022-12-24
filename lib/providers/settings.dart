@@ -4,7 +4,7 @@ import '../utils/storage_manager.dart';
 class GameSetting extends ChangeNotifier {
   int _n = 4;
   int _baseNum = 2;
- 
+  bool _sound = true;
   int get n {
     return _n;
   }
@@ -13,7 +13,9 @@ class GameSetting extends ChangeNotifier {
     return _baseNum;
   }
 
- 
+  bool get sound {
+    return _sound;
+  }
 
   Future<bool> setN(int n) async {
     if (n > 9 || n < 3) {
@@ -35,6 +37,12 @@ class GameSetting extends ChangeNotifier {
     _baseNum = baseNum;
     notifyListeners();
     return true;
+  }
+
+  Future<void> setSound(bool sound) async {
+    await StorageManager.saveData(StorageKeys.sound, sound);
+    _sound = sound;
+    notifyListeners();
   }
 
   Future<void> _fetchN() async {
@@ -59,9 +67,21 @@ class GameSetting extends ChangeNotifier {
     }
   }
 
+  Future<void> _fetchSound() async {
+    var result = await StorageManager.readData(StorageKeys.sound);
+
+    if (result == null) {
+      _sound = true;
+      await setSound(_sound);
+    } else {
+      _sound = result;
+    }
+  }
+
   Future<void> fetch() async {
     await _fetchBaseNumber();
     await _fetchN();
+    await _fetchSound();
 
     notifyListeners();
   }

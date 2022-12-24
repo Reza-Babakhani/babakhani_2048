@@ -28,6 +28,8 @@ class StorageManager {
 
 class StorageKeys {
   static const String n = "n_size";
+  static const String sound = "sound";
+
   static const String baseNum = "base_number";
   static const String themeMode = "theme_mode";
   static const String highScore = "high_score";

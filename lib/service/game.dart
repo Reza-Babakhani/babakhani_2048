@@ -15,9 +15,9 @@ class Game extends ChangeNotifier {
   }
 
   void reset() {
-    StorageManager.readData(StorageKeys.highScore)
+    fetchHighScore()
         .then((value) {
-          _highScore = value;
+          notifyListeners();
         })
         .catchError((e) {})
         .whenComplete(() => {});
@@ -29,6 +29,12 @@ class Game extends ChangeNotifier {
 
     _addTile();
     _addTile();
+
+    notifyListeners();
+  }
+
+  Future<void> fetchHighScore() async {
+    _highScore = await StorageManager.readData(StorageKeys.highScore) ?? 0;
 
     notifyListeners();
   }
@@ -89,7 +95,7 @@ class Game extends ChangeNotifier {
     }
   }
 
-  void moveUp() {
+  bool moveUp() {
     bool isTileMoved = false;
 
     for (int j = 0; j < n; j++) {
@@ -129,9 +135,11 @@ class Game extends ChangeNotifier {
       }
     }
     afterMove(isTileMoved);
+
+    return isTileMoved;
   }
 
-  void moveDown() {
+  bool moveDown() {
     bool isTileMoved = false;
 
     for (int j = 0; j < n; j++) {
@@ -172,9 +180,10 @@ class Game extends ChangeNotifier {
       }
     }
     afterMove(isTileMoved);
+    return isTileMoved;
   }
 
-  void moveLeft() {
+  bool moveLeft() {
     bool isTileMoved = false;
 
     for (int i = 0; i < n; i++) {
@@ -215,9 +224,11 @@ class Game extends ChangeNotifier {
       }
     }
     afterMove(isTileMoved);
+
+    return isTileMoved;
   }
 
-  void moveRight() {
+  bool moveRight() {
     bool isTileMoved = false;
 
     for (int i = 0; i < n; i++) {
@@ -258,6 +269,8 @@ class Game extends ChangeNotifier {
       }
     }
     afterMove(isTileMoved);
+
+    return isTileMoved;
   }
 
   void afterMove(bool isTileMoved) {
