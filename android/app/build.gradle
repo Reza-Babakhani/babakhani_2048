@@ -43,11 +43,11 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        
         applicationId "ir.rezababakhani.play20480"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -67,5 +67,15 @@ flutter {
 }
 
 dependencies {
+   
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+   /*    def exoplayer_version = "2.18.1"
+    implementation "com.google.android.exoplayer:exoplayer-core:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-dash:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-hls:$exoplayer_version"
+    implementation "com.google.android.exoplayer:exoplayer-smoothstreaming:$exoplayer_version" */
+
+    implementation 'com.google.android.exoplayer:exoplayer-decoder:2.18.1'
+ 
 }

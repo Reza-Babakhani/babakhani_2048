@@ -6,9 +6,15 @@ import 'package:babakhani_2048/service/game.dart';
 import 'package:babakhani_2048/utils/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tapsell_plus/tapsell_plus.dart';
 
 void main() {
   runApp(const MyApp());
+
+  const appId =
+      "mngtctbprjnedsmijgbmttpoqsmnghfiaengpglacckogsrpcqideicpftapinkrlhfhrs";
+  TapsellPlus.instance.initialize(appId);
+  TapsellPlus.instance.setGDPRConsent(true);
 }
 
 class MyApp extends StatelessWidget {

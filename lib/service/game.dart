@@ -11,18 +11,19 @@ class Game extends ChangeNotifier {
   Game(GameSetting? setting) {
     _n = setting?.n ?? 4;
     _baseNum = setting?.baseNum ?? 2;
-    reset();
+
+    restore().then((value) {
+      if (!_isGameRestored) {
+        reset();
+      }
+    });
   }
 
   void reset() {
-    fetchHighScore()
-        .then((value) {
-          notifyListeners();
-        })
-        .catchError((e) {})
-        .whenComplete(() => {});
+    fetchHighScore().then((value) {}).catchError((e) {}).whenComplete(() => {});
 
     _isGameOver = false;
+
     _score = 0;
     _rows = List<List<Tile>>.generate(
         n, (index) => List.generate(n, (index) => Tile(0)));
@@ -33,8 +34,59 @@ class Game extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> save() async {
+    if (!isGameOver) {
+      var val = tiles.map((e) => e.value).join(",");
+
+      StorageManager.saveData(StorageKeys.savedGame, val).then((value) {
+        StorageManager.saveData(StorageKeys.score, score).then((value) {});
+      });
+    }
+  }
+
+  Future<void> restore() async {
+    StorageManager.readData(StorageKeys.savedGame).then((data) {
+      data = data as String?;
+      if (data != null && data.isNotEmpty) {
+        _rows = [];
+
+        var tiles = data.split(',');
+
+        for (int i = 0; i < n; i++) {
+          List<Tile> r = [];
+
+          for (int j = 0; j < n; j++) {
+            r.add(Tile(int.parse(tiles[i * n + j])));
+          }
+
+          _rows.add(r);
+        }
+
+        fetchHighScore()
+            .then((value) {})
+            .catchError((e) {})
+            .whenComplete(() => {});
+
+        fetchCurrentScore()
+            .then((value) {})
+            .catchError((e) {})
+            .whenComplete(() => {});
+
+        _isGameOver = false;
+        _isGameRestored = true;
+        notifyListeners();
+      }
+    });
+  }
+
   Future<void> fetchHighScore() async {
     _highScore = await StorageManager.readData(StorageKeys.highScore) ?? 0;
+
+    notifyListeners();
+  }
+
+  Future<void> fetchCurrentScore() async {
+    _score = await StorageManager.readData(StorageKeys.score) ?? 0;
 
     notifyListeners();
   }
@@ -42,6 +94,12 @@ class Game extends ChangeNotifier {
   List<List<Tile>> _rows = [];
   int get n {
     return _n;
+  }
+
+  bool _isGameRestored = false;
+
+  bool get isGameRestored {
+    return _isGameRestored;
   }
 
   int get baseNum {
@@ -288,6 +346,9 @@ class Game extends ChangeNotifier {
       if (tiles.length == n * n &&
           !tiles.any((element) => element.value == 0)) {
         _isGameOver = true;
+
+        StorageManager.saveData(StorageKeys.savedGame, "").then((value) => {});
+        StorageManager.saveData(StorageKeys.score, 0).then((value) => {});
       }
     }
 

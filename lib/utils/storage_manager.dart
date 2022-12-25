@@ -33,5 +33,7 @@ class StorageKeys {
   static const String baseNum = "base_number";
   static const String themeMode = "theme_mode";
   static const String highScore = "high_score";
+  static const String score = "score";
+
   static const String savedGame = "last_game";
 }

@@ -1,8 +1,10 @@
-import 'package:audioplayers/audioplayers.dart';
+import 'package:babakhani_2048/providers/settings.dart';
 import 'package:babakhani_2048/screens/setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_share/flutter_share.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
+import 'package:tapsell_plus/tapsell_plus.dart';
 
 import '../service/game.dart';
 
@@ -15,20 +17,25 @@ class GameScreen extends StatefulWidget {
   State<GameScreen> createState() => _GameScreenState();
 }
 
-class _GameScreenState extends State<GameScreen> {
+class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
   final audioPlayer = AudioPlayer();
-  static const soundAudioPath = "audio/slide.mp3";
-
+  static const soundAudioPath = "assets/audio/slide.mp3";
+  int moves = 0;
+  String adId = "";
   bool _isInit = true;
+
   @override
   void didChangeDependencies() async {
     if (_isInit) {
-      await Provider.of<Game>(context, listen: false)
+      Provider.of<Game>(context, listen: false)
           .fetchHighScore()
           .then((value) => {});
 
       _isInit = false;
+    } else {
+      Provider.of<Game>(context, listen: false).save().then((value) {});
     }
+
     super.didChangeDependencies();
   }
 
@@ -41,9 +48,38 @@ class _GameScreenState extends State<GameScreen> {
         chooserTitle: 'Share High Score');
   }
 
+  Future<void> ad() async {
+    if (moves == 1) {
+      adId = await TapsellPlus.instance.requestStandardBannerAd(
+          "63a851bcf726673208ce0cd5", TapsellPlusBannerType.BANNER_320x50);
+
+      await TapsellPlus.instance.showStandardBannerAd(
+          adId,
+          TapsellPlusHorizontalGravity.BOTTOM,
+          TapsellPlusVerticalGravity.CENTER,
+          margin: const EdgeInsets.only(bottom: 1), onOpened: (map) {
+        // Ad opened
+      }, onError: (map) {
+        // Error when showing ad
+      });
+    }
+  }
+
+  Future<void> afterMove() async {
+    moves += 1;
+
+    if (Provider.of<GameSetting>(context, listen: false).sound) {
+      await audioPlayer.setAsset(soundAudioPath, preload: true);
+      await audioPlayer.play();
+    }
+
+    await ad();
+  }
+
   @override
   Widget build(BuildContext context) {
     Game game = Provider.of<Game>(context);
+
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -102,16 +138,14 @@ class _GameScreenState extends State<GameScreen> {
 
                               bool isMoved = game.moveLeft();
                               if (isMoved) {
-                                await audioPlayer
-                                    .play(AssetSource(soundAudioPath));
+                                await afterMove();
                               }
                             } else if (details.primaryVelocity! > 0) {
                               // User swiped Right
 
                               bool isMoved = game.moveRight();
                               if (isMoved) {
-                                await audioPlayer
-                                    .play(AssetSource(soundAudioPath));
+                                await afterMove();
                               }
                             }
                           },
@@ -121,17 +155,14 @@ class _GameScreenState extends State<GameScreen> {
 
                               bool isMoved = game.moveDown();
                               if (isMoved) {
-                                await audioPlayer
-                                    .play(AssetSource(soundAudioPath));
+                                await afterMove();
                               }
                             } else if (details.primaryVelocity! < 0) {
                               // User swiped Up
 
                               bool isMoved = game.moveUp();
-
                               if (isMoved) {
-                                await audioPlayer
-                                    .play(AssetSource(soundAudioPath));
+                                await afterMove();
                               }
                             }
                           },
@@ -222,5 +253,11 @@ class _GameScreenState extends State<GameScreen> {
             ],
           ),
         ));
+  }
+
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
   }
 }
