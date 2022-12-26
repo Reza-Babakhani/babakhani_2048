@@ -1,10 +1,13 @@
 import 'package:babakhani_2048/providers/settings.dart';
+import 'package:babakhani_2048/utils/storage_manager.dart';
 import 'package:babakhani_2048/utils/theme_manager.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:material_segmented_control/material_segmented_control.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../service/game.dart';
 
 class SettingScreen extends StatelessWidget {
   static const String routeName = "settings";
@@ -92,9 +95,19 @@ class SettingScreen extends StatelessWidget {
                                 Provider.of<GameSetting>(context, listen: false)
                                     .n;
                             if (n > 3) {
-                              await Provider.of<GameSetting>(context,
-                                      listen: false)
-                                  .setN(n - 1);
+                              StorageManager.deleteData(StorageKeys.savedGame)
+                                  .then((value) {
+                                StorageManager.deleteData(StorageKeys.score)
+                                    .then((value) {
+                                  Provider.of<GameSetting>(context,
+                                          listen: false)
+                                      .setN(n - 1)
+                                      .then((value) {
+                                    Provider.of<Game>(context, listen: false)
+                                        .reset();
+                                  });
+                                });
+                              });
                             }
                           },
                           icon: const Icon(Icons.chevron_left_rounded),
@@ -110,9 +123,19 @@ class SettingScreen extends StatelessWidget {
                                       listen: false)
                                   .n;
                               if (n < 9) {
-                                await Provider.of<GameSetting>(context,
-                                        listen: false)
-                                    .setN(n + 1);
+                                StorageManager.deleteData(StorageKeys.savedGame)
+                                    .then((value) {
+                                  StorageManager.deleteData(StorageKeys.score)
+                                      .then((value) {
+                                    Provider.of<GameSetting>(context,
+                                            listen: false)
+                                        .setN(n + 1)
+                                        .then((value) {
+                                      Provider.of<Game>(context, listen: false)
+                                          .reset();
+                                    });
+                                  });
+                                });
                               }
                             },
                             icon: const Icon(Icons.chevron_right_rounded)),
@@ -143,9 +166,19 @@ class SettingScreen extends StatelessWidget {
                                 Provider.of<GameSetting>(context, listen: false)
                                     .baseNum;
                             if (baseNum > 2) {
-                              await Provider.of<GameSetting>(context,
-                                      listen: false)
-                                  .setBaseNumber(baseNum - 1);
+                              StorageManager.deleteData(StorageKeys.savedGame)
+                                  .then((value) {
+                                StorageManager.deleteData(StorageKeys.score)
+                                    .then((value) {
+                                  Provider.of<GameSetting>(context,
+                                          listen: false)
+                                      .setBaseNumber(baseNum - 1)
+                                      .then((value) {
+                                    Provider.of<Game>(context, listen: false)
+                                        .reset();
+                                  });
+                                });
+                              });
                             }
                           },
                           icon: const Icon(Icons.chevron_left_rounded),
@@ -162,9 +195,19 @@ class SettingScreen extends StatelessWidget {
                                       listen: false)
                                   .baseNum;
                               if (baseNum < 10) {
-                                await Provider.of<GameSetting>(context,
-                                        listen: false)
-                                    .setBaseNumber(baseNum + 1);
+                                StorageManager.deleteData(StorageKeys.savedGame)
+                                    .then((value) {
+                                  StorageManager.deleteData(StorageKeys.score)
+                                      .then((value) {
+                                    Provider.of<GameSetting>(context,
+                                            listen: false)
+                                        .setBaseNumber(baseNum + 1)
+                                        .then((value) {
+                                      Provider.of<Game>(context, listen: false)
+                                          .reset();
+                                    });
+                                  });
+                                });
                               }
                             },
                             icon: const Icon(Icons.chevron_right_rounded)),

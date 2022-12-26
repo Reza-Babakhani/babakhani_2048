@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Tile extends StatefulWidget {
-  int _value = 0;
+  final int _value;
 
   int get value {
     return _value;
   }
 
-  Tile(
+  const Tile(
     this._value, {
     super.key,
   });
@@ -26,10 +26,6 @@ class Tile extends StatefulWidget {
 }
 
 class _TileState extends State<Tile> {
-  setValue(int val) {
-    widget._value = val;
-  }
-
   @override
   Widget build(BuildContext context) {
     int baseNum = Provider.of<GameSetting>(context).baseNum;

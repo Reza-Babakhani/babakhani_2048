@@ -26,7 +26,7 @@ class Game extends ChangeNotifier {
 
     _score = 0;
     _rows = List<List<Tile>>.generate(
-        n, (index) => List.generate(n, (index) => Tile(0)));
+        n, (index) => List.generate(n, (index) => const Tile(0)));
 
     _addTile();
     _addTile();
@@ -161,7 +161,7 @@ class Game extends ChangeNotifier {
         for (int i = 1; i < n; i++) {
           if (_rows[i - 1][j].value == 0 && _rows[i][j].value != 0) {
             _rows[i - 1][j] = Tile(_rows[i][j].value);
-            _rows[i][j] = Tile(0);
+            _rows[i][j] = const Tile(0);
             isTileMoved = true;
           }
         }
@@ -174,7 +174,7 @@ class Game extends ChangeNotifier {
             _rows[i][j].value != 0 &&
             _rows[i][j].value == _rows[i - 1][j].value) {
           _rows[i - 1][j] = Tile(_rows[i][j].value * 2);
-          _rows[i][j] = Tile(0);
+          _rows[i][j] = const Tile(0);
           isTileMoved = true;
           _score += _rows[i - 1][j].value;
         }
@@ -186,7 +186,7 @@ class Game extends ChangeNotifier {
         for (int i = 1; i < n; i++) {
           if (_rows[i - 1][j].value == 0 && _rows[i][j].value != 0) {
             _rows[i - 1][j] = Tile(_rows[i][j].value);
-            _rows[i][j] = Tile(0);
+            _rows[i][j] = const Tile(0);
             isTileMoved = true;
           }
         }
@@ -205,7 +205,7 @@ class Game extends ChangeNotifier {
         for (int i = n - 2; i >= 0; i--) {
           if (_rows[i + 1][j].value == 0 && _rows[i][j].value != 0) {
             _rows[i + 1][j] = Tile(_rows[i][j].value);
-            _rows[i][j] = Tile(0);
+            _rows[i][j] = const Tile(0);
             isTileMoved = true;
           }
         }
@@ -218,7 +218,7 @@ class Game extends ChangeNotifier {
             _rows[i][j].value != 0 &&
             _rows[i][j].value == _rows[i + 1][j].value) {
           _rows[i + 1][j] = Tile(_rows[i][j].value * 2);
-          _rows[i][j] = Tile(0);
+          _rows[i][j] = const Tile(0);
           isTileMoved = true;
 
           _score += _rows[i + 1][j].value;
@@ -231,7 +231,7 @@ class Game extends ChangeNotifier {
         for (int i = n - 2; i >= 0; i--) {
           if (_rows[i + 1][j].value == 0 && _rows[i][j].value != 0) {
             _rows[i + 1][j] = Tile(_rows[i][j].value);
-            _rows[i][j] = Tile(0);
+            _rows[i][j] = const Tile(0);
             isTileMoved = true;
           }
         }
@@ -249,7 +249,7 @@ class Game extends ChangeNotifier {
         for (int j = 1; j < n; j++) {
           if (_rows[i][j - 1].value == 0 && _rows[i][j].value != 0) {
             _rows[i][j - 1] = Tile(_rows[i][j].value);
-            _rows[i][j] = Tile(0);
+            _rows[i][j] = const Tile(0);
             isTileMoved = true;
           }
         }
@@ -262,7 +262,7 @@ class Game extends ChangeNotifier {
             _rows[i][j].value != 0 &&
             _rows[i][j].value == _rows[i][j - 1].value) {
           _rows[i][j - 1] = Tile(_rows[i][j].value * 2);
-          _rows[i][j] = Tile(0);
+          _rows[i][j] = const Tile(0);
           isTileMoved = true;
 
           _score += _rows[i][j - 1].value;
@@ -275,7 +275,7 @@ class Game extends ChangeNotifier {
         for (int j = 1; j < n; j++) {
           if (_rows[i][j - 1].value == 0 && _rows[i][j].value != 0) {
             _rows[i][j - 1] = Tile(_rows[i][j].value);
-            _rows[i][j] = Tile(0);
+            _rows[i][j] = const Tile(0);
             isTileMoved = true;
           }
         }
@@ -294,7 +294,7 @@ class Game extends ChangeNotifier {
         for (int j = n - 2; j >= 0; j--) {
           if (_rows[i][j + 1].value == 0 && _rows[i][j].value != 0) {
             _rows[i][j + 1] = Tile(_rows[i][j].value);
-            _rows[i][j] = Tile(0);
+            _rows[i][j] = const Tile(0);
             isTileMoved = true;
           }
         }
@@ -307,7 +307,7 @@ class Game extends ChangeNotifier {
             _rows[i][j].value != 0 &&
             _rows[i][j].value == _rows[i][j + 1].value) {
           _rows[i][j + 1] = Tile(_rows[i][j].value * 2);
-          _rows[i][j] = Tile(0);
+          _rows[i][j] = const Tile(0);
           isTileMoved = true;
 
           _score += _rows[i][j + 1].value;
@@ -320,7 +320,7 @@ class Game extends ChangeNotifier {
         for (int j = n - 2; j >= 0; j--) {
           if (_rows[i][j + 1].value == 0 && _rows[i][j].value != 0) {
             _rows[i][j + 1] = Tile(_rows[i][j].value);
-            _rows[i][j] = Tile(0);
+            _rows[i][j] = const Tile(0);
             isTileMoved = true;
           }
         }

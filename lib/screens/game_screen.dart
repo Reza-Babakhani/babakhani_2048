@@ -1,6 +1,7 @@
 import 'package:babakhani_2048/providers/settings.dart';
 import 'package:babakhani_2048/screens/setting_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_share/flutter_share.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
@@ -183,7 +184,11 @@ class _GameScreenState extends State<GameScreen> with WidgetsBindingObserver {
                                   crossAxisSpacing: 10,
                                   childAspectRatio: 1,
                                   crossAxisCount: game.n,
-                                  children: game.tiles,
+                                  children: [
+                                    ...game.tiles.map((e) {
+                                      return e.animate().scale();
+                                    })
+                                  ],
                                 ),
                               ),
                             ),
